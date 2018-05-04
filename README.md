@@ -1,60 +1,40 @@
 
-README
-------
+## dotCMS Hubspot Plugin
 
-This bundle plugin provides a filter that logs information regarding a site visitor.  It requires that the user is running under the Tomcat app server.
+This is a POC plugin that provides two components, a (servlet) filter and a viewtool.
+
+The filter proxys access to the hubspot api endponts, which are not browser accessable by default.  In in providing this, it also obfuscates the hubspot api key from clients.  To access the apis, you use the normal hubspot api call as in the hubspot documentation, except that you make the call locally and append `/hubAPI` to the call.  The plugin will intercept the calls and proxy (GETs and POSTs) them to hubspots api 
+
+So if you want to call : `https://developers.hubspot.com/docs/methods/contacts/create_contact`
+
+instead you should call: `https://dotcmssite.com/hubAPI/docs/methods/contacts/create_contact`
+
+The second component it provides is a viewtool that will sniff the hubspot tracking cookie and return all know data regarding the visitor.  This data is returned as a JSON object - which has all of hubspots current information.  
+There are two methods, `$hubspot.getContact()` which will get the visitors information and cache it in the visitors session and `$hubspot.refreshContact()` which will obviously refresh the visitor's information from hubspot.
 
 
-How to build this example
--------------------------
+Here is an example response from hubspot
+https://gist.github.com/wezell/2cb1f972d233e3b6ef8fd3bf8be436bc
 
-To build this, run  `./gradlew jar`.  This will create two jars, both of which you should upload into your dotCMS.
-
-
+To get the current contact info, for example, you would:
 
 ```
-{
-	"id": "d7da6ae2-4453-44a0-b365-ae5750263ea3",
-	"status": 200,
-	"iAm": "PAGE",
-	"uri": "/index.dot",
-	"ms": 37,
-	"cluster": "1d010733d3",
-	"server": "1e72e6fcb5",
-	"session": "7C6E78FEDC321CE3BD247AFFDC95A404",
-	"sessionNew": false,
-	"time": 1522447806684,
-	"mime": "text/html;charset=UTF-8",
-	"vanityUrl": null,
-	"referer": null,
-	"host": "dotcms.com",
-	"assetId": "8569f998-176b-48e1-bcc8-833ca673f813",
-	"contentId": null,
-	"lang": "en-us",
-	"ipHash": "cc1b829ae72692c9f241cf6a57b53a82f70a73a2",
-	"dmid": "191f3d20-80f9-48af-92ef-b02634121920",
-	"device": "COMPUTER",
-	"weightedTags": [],
-	"persona": null,
-	"pagesViewed": 1,
-	"agent": {
-		"operatingSystem": "WINDOWS_7",
-		"browser": "FIREFOX40",
-		"id": 34933977,
-		"browserVersion": {
-			"version": "40.1",
-			"majorVersion": "40",
-			"minorVersion": "1"
-		}
-	},
-	"g.ip": "ukn",
-	"h.host": "dotcms.com",
-	"h.user-agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1",
-	"queryString": null,
-	"rulesRequest": "",
-	"rulesSession": "",
-	"ip": "178.209.29.187",
-	"c.dmid": "191f3d20-80f9-48af-92ef-b02634121920",
-	"userId": null
-}
+
+$hubspot.getContact().properties.firstname
+$hubspot.getContact().properties.lastName
+$hubspot.getContact().properties.hubspotscore
+
 ```
+
+
+## Installation
+
+Before installing the plugin, you need to change a single line of code and set your hubspot api key
+
+https://github.com/dotCMS/com.dotcms.hubspot/blob/master/src/main/java/com/dotcms/osgi/api/HubspotAPI.java#L25
+
+## Left todo
+* oauth authentication
+* more defined value pojos to help make sense of the json responses
+* hubspot form integration - will allow instant mapping of the hubspotutk cookie (this could be done now via /hubAPI if the form is created in hubspot manually)
+
