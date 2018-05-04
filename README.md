@@ -16,16 +16,13 @@ There are two methods, `$hubspot.getContact()` which will get the visitors infor
 Here is an example response from hubspot
 https://gist.github.com/wezell/2cb1f972d233e3b6ef8fd3bf8be436bc
 
-To get the current contact info, for example, you would:
+To get the current contact info in serverside velocity you would:
 
 ```
-
 $hubspot.getContact().properties.firstname
 $hubspot.getContact().properties.lastName
 $hubspot.getContact().properties.hubspotscore
-
 ```
-
 
 ## Installation
 
@@ -33,8 +30,8 @@ Before installing the plugin, you need to change a single line of code and set y
 
 https://github.com/dotCMS/com.dotcms.hubspot/blob/master/src/main/java/com/dotcms/osgi/api/HubspotAPI.java#L25
 
-## Left todo
+## Todo
 * oauth authentication
 * more defined value pojos to help make sense of the json responses
 * hubspot form integration - will allow instant mapping of the hubspotutk cookie (this could be done now via /hubAPI if the form is created in hubspot manually)
-
+* ?
