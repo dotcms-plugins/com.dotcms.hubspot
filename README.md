@@ -1,5 +1,5 @@
 
-## dotCMS Hubspot Plugin
+## dotCMS Hubspot POC Plugin
 
 This is a POC plugin that provides two components, a (servlet) filter and a viewtool.
 
@@ -35,3 +35,7 @@ https://github.com/dotCMS/com.dotcms.hubspot/blob/master/src/main/java/com/dotcm
 * more defined value pojos to help make sense of the json responses
 * hubspot form integration - will allow instant mapping of the hubspotutk cookie (this could be done now via /hubAPI if the form is created in hubspot manually)
 * ?
+
+## DISCLAIMER
+Plugins are code outside of the dotCMS core code and unless explicitly stated otherwise, are not covered or warrantied  under dotCMS support engagements. However, support and customization for plugins is available through our Enterprise Services department. Contact us for more information.
+
