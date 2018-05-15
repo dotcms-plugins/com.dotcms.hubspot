@@ -30,6 +30,67 @@ Before installing the plugin, you need to change a single line of code and set y
 
 https://github.com/dotCMS/com.dotcms.hubspot/blob/master/src/main/java/com/dotcms/osgi/api/HubspotAPI.java#L25
 
+Then build it
+`./gradlew jar`
+
+Then upload the files into your dotCMS installation:
+
+
+## Javascript to POST data (a contact) into HubSpot
+
+This is an example of a javascript function that takes a json object and posts it into Hubspot.
+
+
+```js
+    function postToHubspot(dataObj) {
+    
+    	var jsonObject = dataObj;
+        var valids=["email","firstname","lastname", "website","phone","address","city","state","zip"]
+        var validSet = new Set(valids);
+        var properties = [];
+        for (var prop in jsonObject) {
+          var lprop=prop.toLowerCase();
+          var val = jsonObject[prop];
+              if(validSet.has(lprop)){
+                var x={"property":lprop, "value":val}
+
+
+                properties.push(x)
+              }
+          
+          }
+		var newProps = {"properties":properties};
+		var jsonStr=JSON.stringify(newProps);
+		console.log("newProps",newProps);
+		console.log("jsonStr",jsonStr);
+
+        $.ajax({
+            url: '/hubAPI/contacts/v1/contact/',
+            type: 'POST',
+            cache: false,
+            data: jsonStr,
+            dataType: 'json',
+
+            success: function (data, status, xhr) {
+                console.log("Success: ");
+                console.log("data", data);
+                alert("hubspot succeeded:" + data);
+
+            },
+            error: function (data, status, xhr) {
+                console.log("fail: ");
+                console.log("data", data);
+                console.log("status", status);
+                alert("hubspot failed:" + data);
+            }
+        });
+    }
+```
+
+
+
+
+
 ## Todo
 * oauth authentication
 * more defined value pojos to help make sense of the json responses
