@@ -42,49 +42,97 @@ This is an example of a javascript function that takes a json object and posts i
 
 
 ```js
-    function postToHubspot(dataObj) {
-    
-    	var jsonObject = dataObj;
-        var valids=["email","firstname","lastname", "website","phone","address","city","state","zip"]
-        var validSet = new Set(valids);
-        var properties = [];
-        for (var prop in jsonObject) {
-          var lprop=prop.toLowerCase();
-          var val = jsonObject[prop];
-              if(validSet.has(lprop)){
-                var x={"property":lprop, "value":val}
+<script>
+
+/*
+Takes the Contact Us form and sends it to hubspot instead of dotCMS
+*/
+
+function postToHubspot() {
+
+	errorFieldName='';
+	var isValid = checkTabFields("Contact Us"); 
+	if(!isValid){	
+		if(errorFieldName != null && errorFieldName != ''){
+			document.getElementById(errorFieldName).focus();	
+		}
+		return false;	
+	}
 
 
-                properties.push(x)
-              }
-          
-          }
-		var newProps = {"properties":properties};
-		var jsonStr=JSON.stringify(newProps);
-		console.log("newProps",newProps);
-		console.log("jsonStr",jsonStr);
+	var formObj = dojo.formToJson("submitContentForm");
+	
+	var jsonObject =  (formObj.constructor === "test".constructor) ? JSON.parse(formObj) : formObj;
 
-        $.ajax({
-            url: '/hubAPI/contacts/v1/contact/',
-            type: 'POST',
-            cache: false,
-            data: jsonStr,
-            dataType: 'json',
+	var valids=["email","firstname","lastname", "website","phone","address","city","state","zip"]
+	
+	
+	
+	var validSet = new Set(valids);
+	var properties = [];
+	for (var prop in jsonObject) {
+	  var lprop=prop.toLowerCase();
+	  var val = jsonObject[prop];
+		  if(validSet.has(lprop)){
+			var x={"property":lprop, "value":val}
 
-            success: function (data, status, xhr) {
-                console.log("Success: ");
-                console.log("data", data);
-                alert("hubspot succeeded:" + data);
 
-            },
-            error: function (data, status, xhr) {
-                console.log("fail: ");
-                console.log("data", data);
-                console.log("status", status);
-                alert("hubspot failed:" + data);
-            }
-        });
-    }
+			properties.push(x)
+		  }
+	  
+	  }
+	var newProps = {"properties":properties};
+	var jsonStr=JSON.stringify(newProps);
+	console.log("newProps",newProps);
+	console.log("jsonStr",jsonStr);
+
+	$.ajax({
+		url: '/hubAPI/contacts/v1/contact/',
+		type: 'POST',
+		cache: false,
+		data: jsonStr,
+		dataType: 'json',
+
+		success: function (data, status, xhr) {
+			console.log("Success: ");
+			console.log("data", data);
+			window.location="/contact-us/thank-you";
+
+		},
+		error: function (data, status, xhr) {
+			console.log("fail: ");
+			console.log("data", data);
+			console.log("status", status);
+			alert("form failed:" + data);
+		}
+	});
+	
+	
+}
+
+
+
+function overrideSubmit(){
+
+	var submitButton = dojo.byId("submitButton");
+
+	dojo.empty(submitButton);
+	dojo.style(submitButton, "text-align", "center");
+	
+
+	// Create a button programmatically:
+	var myButton = new dijit.form.Button({
+		label: "Save",
+		onClick: function(){postToHubspot()}
+	});
+	
+	myButton.placeAt(submitButton);
+   
+}
+dojo.addOnLoad(overrideSubmit);
+
+</script>
+
 ```
 
 
