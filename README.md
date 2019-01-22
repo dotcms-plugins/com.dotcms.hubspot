@@ -33,7 +33,7 @@ $hubspot.getContact().properties.email.value
 
 Before installing the plugin, you need to change a single line of code and set your hubspot api key
 
-https://github.com/dotCMS/com.dotcms.hubspot/blob/master/src/main/java/com/dotcms/osgi/api/HubspotAPI.java#L25
+https://github.com/dotCMS-plugins/com.dotcms.hubspot/blob/master/src/main/java/com/dotcms/osgi/api/HubspotAPI.java#L25
 
 Then build it
 `./gradlew jar`
