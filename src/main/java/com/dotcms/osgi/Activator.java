@@ -14,26 +14,32 @@
  */
 package com.dotcms.osgi;
 
-import com.dotcms.osgi.servlet.HubspotFilter;
-import com.dotcms.osgi.util.FilterOrder;
-import com.dotcms.osgi.util.TomcatServletFilterUtil;
-import com.dotcms.osgi.viewtool.HubspotToolInfo;
 
+import com.dotcms.filters.interceptor.FilterWebInterceptorProvider;
+import com.dotcms.filters.interceptor.WebInterceptorDelegate;
+import com.dotcms.osgi.servlet.HubspotInterceptor;
+import com.dotcms.osgi.viewtool.HubspotToolInfo;
+import com.dotmarketing.filters.AutoLoginFilter;
 import com.dotmarketing.osgi.GenericBundleActivator;
+import com.dotmarketing.util.Config;
 import com.dotmarketing.util.Logger;
 
 import org.osgi.framework.BundleContext;
 
 public final class Activator extends GenericBundleActivator {
 
-    final static String FILTER_NAME = "HubspotFilter";
 
 
+    final HubspotInterceptor hubspotInterceptor = new HubspotInterceptor();
 
     @Override
     public void start(BundleContext context) throws Exception {
-        initializeServices(context);
-        new TomcatServletFilterUtil().addFilter(FILTER_NAME, new HubspotFilter(), FilterOrder.FIRST, "*");
+        //initializeServices(context);
+        final FilterWebInterceptorProvider filterWebInterceptorProvider = FilterWebInterceptorProvider.getInstance(Config.CONTEXT);
+
+        final WebInterceptorDelegate delegate = filterWebInterceptorProvider.getDelegate(AutoLoginFilter.class);
+
+        delegate.addFirst(hubspotInterceptor);
 
 
         // Registering the ViewTool service
@@ -47,8 +53,11 @@ public final class Activator extends GenericBundleActivator {
     @Override
     public void stop(BundleContext context) throws Exception {
         unregisterViewToolServices();
-        new TomcatServletFilterUtil().removeFilter(FILTER_NAME);
+        final FilterWebInterceptorProvider filterWebInterceptorProvider = FilterWebInterceptorProvider.getInstance(Config.CONTEXT);
 
+        final WebInterceptorDelegate delegate = filterWebInterceptorProvider.getDelegate(AutoLoginFilter.class);
+
+        delegate.remove(hubspotInterceptor.getName(), true);
 
 
     }

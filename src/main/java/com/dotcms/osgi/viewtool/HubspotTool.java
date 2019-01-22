@@ -32,5 +32,24 @@ public class HubspotTool implements ViewTool {
     public JSONObject refreshContact() {
         return new HubspotAPI().refreshContact(request);
     }
+    
+    
+    public int score() {
+
+        try {
+            return Integer.parseInt(getContact().get("properties.hubspotscore").toString());
+        }
+        catch(Exception e) {
+            return 0;
+        }
+        
+        
+        
+        
+        
+    }
+    
+    
+    
 
 }

@@ -1,12 +1,6 @@
 package com.dotcms.osgi.api;
 
-import com.dotmarketing.util.Logger;
-import com.dotmarketing.util.UtilMethods;
-import com.dotmarketing.util.json.JSONException;
-import com.dotmarketing.util.json.JSONObject;
-
 import java.io.IOException;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,16 +13,20 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 
+import com.dotmarketing.util.Logger;
+import com.dotmarketing.util.UtilMethods;
+import com.dotmarketing.util.json.JSONObject;
 import com.google.gson.Gson;
 
 public class HubspotAPI {
-    private final String HSKEY = "hapikey=XXXXXXXXX-XXXXXXXXX";
+    private final String HSKEY = "hapikey=a4abf0e7-48ae-44ba-84c2-c44fde2b3d5e";
     private final String HUBHOST = "https://api.hubapi.com/";
     private final String GET_CONTACT_URL = "/contacts/v1/contact/utk/HSCOOKIE/profile";
     public final static String HUB_COOKIE = "hubspotutk";
 
-    private final String[] validContactFields =
-            {"email", "firstname", "lastname", "website", "company", "phone", "address", "city", "state", "zip", "comments"};
+  private final String[] validContactFields = {"email", "firstname", "lastname", "leadsource", "gdpr_acceptance",
+      "gdpr_opt_in_single_check", "message", "industry", "tags", "hs_persona", "numemployees", "website", "phone", "address", "city",
+      "state", "zip", "company", "country", "lead_source_category"};
 
 
     private String getHubUrl(final String incoming) {
