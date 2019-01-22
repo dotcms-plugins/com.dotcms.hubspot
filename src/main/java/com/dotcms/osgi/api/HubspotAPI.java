@@ -19,7 +19,7 @@ import com.dotmarketing.util.json.JSONObject;
 import com.google.gson.Gson;
 
 public class HubspotAPI {
-    private final String HSKEY = "hapikey=a4abf0e7-48ae-44ba-84c2-c44fde2b3d5e";
+    private final String HSKEY = "";
     private final String HUBHOST = "https://api.hubapi.com/";
     private final String GET_CONTACT_URL = "/contacts/v1/contact/utk/HSCOOKIE/profile";
     public final static String HUB_COOKIE = "hubspotutk";
