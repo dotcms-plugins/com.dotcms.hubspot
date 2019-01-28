@@ -64,7 +64,7 @@ dotCMSFieldVarname1:hotspotFieldId1, dotCMSFieldVarname2:hotspotFieldId2, dotCMS
 ---
 
 ## Hubspot Score Rule Condition
-This adds a new Rule condition that allows an adminstrator to use a visitors lead score to present specific actions within dotCMS
+This adds a new Rule condition that allows an adminstrator to use a visitors lead score to present specific actions within dotCMS if the lead score is above or below a specific mark.  e.g. if `hubspot lead score > 100` redirect the visitor to an intersital page with a specific offer if they act now.
 
 ---
 
