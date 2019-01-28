@@ -26,13 +26,14 @@ public class HubspotScoreConditionlet extends Conditionlet<HubspotScoreCondition
 
     private static final long serialVersionUID = 1L;
 
-    public static final String HUBSPOT_SCORE_KEY = "com.dotcms.hubspotscore.key";
-
+    public static final String I18N_BASE = "com.dotcms.hubspot.rules.conditionlet.HubspotScoreConditionlet";
+    public static final String HUBSPOT_FORM_ENTRY__KEY = "hubspot_score";
+    
     private static final ParameterDefinition<NumericType> HUBSPOT_SCORE_PARAMETER =
-            new ParameterDefinition<>(3, HUBSPOT_SCORE_KEY, new NumericInput<>(new NumericType().required()));
+            new ParameterDefinition<>(3, HUBSPOT_FORM_ENTRY__KEY, new NumericInput<>(new NumericType().required()));
 
     public HubspotScoreConditionlet() {
-        super(HUBSPOT_SCORE_KEY, new ComparisonParameterDefinition(2, NUMERIC_COMPARISONS), HUBSPOT_SCORE_PARAMETER);
+        super(I18N_BASE, new ComparisonParameterDefinition(2, NUMERIC_COMPARISONS), HUBSPOT_SCORE_PARAMETER);
     }
 
     /**
@@ -52,7 +53,7 @@ public class HubspotScoreConditionlet extends Conditionlet<HubspotScoreCondition
         } catch (Exception e) {
             Logger.warn(this, "Could not parse hubspot score");
         }
-        System.out.println("hubby score" + score);
+        System.out.println("hubby score:" + score);
 
         return instance.comparison.perform(score, instance.hubspotScore);
 
@@ -70,9 +71,9 @@ public class HubspotScoreConditionlet extends Conditionlet<HubspotScoreCondition
 
         private Instance(HubspotScoreConditionlet definition, Map<String, ParameterModel> parameters) {
             try {
-                this.hubspotScore = Integer.parseInt(parameters.get(HUBSPOT_SCORE_KEY).getValue());
+                this.hubspotScore = Integer.parseInt(parameters.get(HUBSPOT_FORM_ENTRY__KEY).getValue());
             } catch (NumberFormatException e) {
-                throw new InvalidParameterException(HUBSPOT_SCORE_KEY + " must be an integer value");
+                throw new InvalidParameterException(HUBSPOT_FORM_ENTRY__KEY + " must be an integer value");
             }
             String comparisonValue = parameters.get(COMPARISON_KEY).getValue();
             try {
