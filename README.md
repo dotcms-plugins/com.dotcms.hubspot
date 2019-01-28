@@ -1,5 +1,5 @@
 
-## dotCMS Hubspot POC Plugin
+# dotCMS Hubspot Plugin
 
 This is a POC plugin that provides 4 components, 
 - A Hubspot api interceptor that allows hubspot APIs to be called through dotCMS
@@ -72,7 +72,7 @@ This adds a new Rule condition that allows an adminstrator to use a visitors lea
 
 Before installing the plugin, you need to change a single line of code and set your hubspot api key
 
-https://github.com/dotCMS-plugins/com.dotcms.hubspot/blob/master/src/main/java/com/dotcms/osgi/api/HubspotAPI.java#L25
+https://github.com/dotCMS-plugins/com.dotcms.hubspot/blob/master/src/main/java/com/dotcms/hubspot/api/HubspotAPI.java#L25
 
 Then build it
 `./gradlew jar`
