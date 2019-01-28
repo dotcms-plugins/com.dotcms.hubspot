@@ -1,4 +1,4 @@
-package com.dotcms.osgi.util;
+package com.dotcms.hubspot.util;
 
 public enum FilterOrder {
   FIRST, LAST;

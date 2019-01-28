@@ -1,6 +1,6 @@
-package com.dotcms.osgi.viewtool;
+package com.dotcms.hubspot.viewtool;
 
-import com.dotcms.osgi.api.HubspotAPI;
+import com.dotcms.hubspot.api.HubspotAPI;
 
 import com.dotmarketing.util.json.JSONObject;
 

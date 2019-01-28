@@ -1,4 +1,4 @@
-package com.dotcms.osgi.util;
+package com.dotcms.hubspot.util;
 
 import java.lang.reflect.Field;
 

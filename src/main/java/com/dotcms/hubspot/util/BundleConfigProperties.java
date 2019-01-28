@@ -10,7 +10,7 @@
  * ***************************************************************************** 
  */
 
-package com.dotcms.osgi.util;
+package com.dotcms.hubspot.util;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

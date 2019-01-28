@@ -1,4 +1,4 @@
-package com.dotcms.osgi.viewtool;
+package com.dotcms.hubspot.viewtool;
 
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.servlet.ServletToolInfo;

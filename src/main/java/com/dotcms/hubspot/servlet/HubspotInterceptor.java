@@ -1,5 +1,5 @@
 
-package com.dotcms.osgi.servlet;
+package com.dotcms.hubspot.servlet;
 
 
 import java.io.IOException;
@@ -11,7 +11,7 @@ import org.apache.commons.io.IOUtils;
 
 import com.dotcms.filters.interceptor.Result;
 import com.dotcms.filters.interceptor.WebInterceptor;
-import com.dotcms.osgi.api.HubspotAPI;
+import com.dotcms.hubspot.api.HubspotAPI;
 import com.dotmarketing.util.json.JSONException;
 import com.dotmarketing.util.json.JSONObject;
 
