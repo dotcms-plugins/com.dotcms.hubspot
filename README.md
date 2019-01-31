@@ -1,9 +1,15 @@
 
-## dotCMS Hubspot POC Plugin
+# dotCMS Hubspot Plugin
 
-This is a POC plugin that provides two components, an api interceptor and a viewtool.
+This is a POC plugin that provides 4 components, 
+- A Hubspot api interceptor that allows hubspot APIs to be called through dotCMS
+- A Velocity viewtool that maps a site visitor to a hubspot contact, `$hubspot.contact` 
+- a workflow actionlet that pushes a Content entry to Hubspot as a Contact  
+- a Rule Condition that allows you to perform actions on a visitor based on their lead score in hubspot
 
-The interceptor proxys access to the hubspot api endponts, which are not browser accessable by default.  In in providing this, it also obfuscates the hubspot api key from clients.  To access the apis, you use the normal hubspot api call as in the hubspot documentation, except that you make the call locally and append `/hubapi` to the call.  The plugin will intercept the calls and proxy (GETs and POSTs) them to hubspots api 
+---
+## API Interceptor
+The interceptor proxys access to the hubspot api endponts, which are not browser accessable by default.  In in providing this, it also obfuscates the hubspot api key from clients.  To access the apis, you use the normal hubspot api call as in the hubspot documentation, except that you make the call locally and append `/hubapi` to the call.  The plugin will intercept the calls and proxy (GETs and POSTs) them to hubspots api.  N
 
 So if you want to call : `https://developers.hubspot.com/docs/methods/contacts/create_contact`
 
@@ -16,7 +22,11 @@ To see the api working and to see the data hubspot has on you, call:
 Here is an example response from hubspot
 https://gist.github.com/wezell/2cb1f972d233e3b6ef8fd3bf8be436bc
 
-The second component it provides is a viewtool that will sniff the hubspot tracking cookie and return all know data regarding the visitor.  This data is returned as a JSON object - which has all of hubspots current information.  
+**Note** this component exposes the Hubspot API based the api key used in the plugin.  This should either be locked down or should modified for use in production environs. 
+
+---
+## Hubspot Viewtool 
+This component provides a viewtool that will sniff the hubspot tracking cookie and return all know data regarding the visitor.  This data is returned as a JSON object - which has all of hubspots current information.  
 There are two methods, `$hubspot.getContact()` which will get the visitors information and cache it in the visitors session and `$hubspot.refreshContact()` which will obviously refresh the visitor's information from hubspot.
 
 
@@ -28,19 +38,48 @@ $hubspot.getContact().properties.lastname.value
 $hubspot.getContact().properties.hubspotscore.value
 $hubspot.getContact().properties.email.value
 ```
+---
+## Workflow Actionlet Content -> Hubspot Contact
+
+This actionlet can be used to within a workflow to push a piece of content - say a visitor entered form to hubspot as a new contact.  To use it, you will need 2 things:
+
+1. Hubspot Portal Id : 
+How to get the Portal Id: https://knowledge.hubspot.com/articles/kcs_article/account/where-can-i-find-my-hubspot-portal-id
+2. Hubspot Form Id : 
+How to get the Form Id: https://knowledge.hubspot.com/articles/kcs_article/forms/how-do-i-find-the-form-guid
+
+We suggest using a kitchen sink form approach create one large hubspot form that has every parameter you might want to collect and using that as a basis for all your form postings.
+
+** Hubspot Fields Mapping: ** 
+On Hubspot each field of the contact form have an id, in order to map each of the fields of the *Content Type* using this Actionlet with those Hubspot fields we use the **Hubspot Fields Mapping** parameter, with that parameter we map the dotCMS field varname with the hotspot Contact Form field id.
+
+**Example:**
+dotCMSFieldVarname1:hotspotFieldId1, dotCMSFieldVarname2:hotspotFieldId2, dotCMSFieldVarname3:hotspotFieldId3
+
+**NOTE:** Only mapped fields are going to be sent to the Hubspot API
+
+## Screenshots
+![actionlet](https://cloud.githubusercontent.com/assets/923947/17302614/3d0dddfe-57da-11e6-9715-16ffdf9d0fa9.png)
+
+---
+
+## Hubspot Score Rule Condition
+This adds a new Rule condition that allows an adminstrator to use a visitors lead score to present specific actions within dotCMS if the lead score is above or below a specific mark.  e.g. if `hubspot lead score > 100` redirect the visitor to an intersital page with a specific offer if they act now.
+
+---
 
 ## Installation
 
 Before installing the plugin, you need to change a single line of code and set your hubspot api key
 
-https://github.com/dotCMS-plugins/com.dotcms.hubspot/blob/master/src/main/java/com/dotcms/osgi/api/HubspotAPI.java#L25
+https://github.com/dotCMS-plugins/com.dotcms.hubspot/blob/master/src/main/java/com/dotcms/hubspot/api/HubspotAPI.java#L25
 
 Then build it
 `./gradlew jar`
 
 Then upload the files into your dotCMS installation:
 
-
+---
 ## Javascript to POST data (a contact) into HubSpot
 
 This is an example of a javascript function that takes a json object and posts it into Hubspot.
@@ -139,6 +178,7 @@ dojo.addOnLoad(overrideSubmit);
 </script>
 
 ```
+
 
 
 
