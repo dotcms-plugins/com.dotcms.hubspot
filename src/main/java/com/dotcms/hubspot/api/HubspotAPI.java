@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 
 public class HubspotAPI {
 
-    private final String HSKEY = "hapikey=XXXXXX-XXXXXX";
+    private final String HSKEY = "XXXXXXXXXXXXXXXXXX";
 
     private final String HUBHOST = "https://api.hubapi.com/";
     private final String GET_CONTACT_URL = "/contacts/v1/contact/utk/HSCOOKIE/profile";
@@ -36,7 +36,7 @@ public class HubspotAPI {
 
 
         return HUBHOST + ((incoming.indexOf("hapikey=") > -1) ? incoming
-                : (incoming.indexOf("?") > -1) ? incoming + "&" + HSKEY : incoming + "?" + HSKEY);
+                : (incoming.indexOf("?") > -1) ? incoming + "&hapikey=" + HSKEY : incoming + "?hapikey=" + HSKEY);
     }
 
     public String proxyPost(final String incomingUrl, JSONObject json) throws ClientProtocolException, IOException {
